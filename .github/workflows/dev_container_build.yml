@@ -32,10 +32,6 @@ concurrency:
 
 jobs:
 
-  check_ghcr_push:
-    uses: eclipse-kuksa/kuksa-actions/.github/workflows/check_ghcr_push.yml@2
-    secrets: inherit
-
   get_tag:
     runs-on: ubuntu-latest
     outputs:
@@ -57,7 +53,6 @@ jobs:
 
   build-devcontainer:
     runs-on: ubuntu-latest
-    needs: check_ghcr_push
     steps:
       - name: adding github workspace as safe directory
         run: git config --global --add safe.directory $GITHUB_WORKSPACE
@@ -81,7 +76,6 @@ jobs:
             type=semver,pattern={{major}}
 
       - name: Log in to the Container registry
-        if: needs.check_ghcr_push.outputs.push == 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -107,24 +101,4 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ttl.sh/kuksa.val.services/oci_kuksa-val-services-ci-${{github.sha}}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Build container and push to ttl.sh
-        if: needs.check_ghcr_push.outputs.push == 'false'
-        id: tmp-build
-        uses: docker/build-push-action@v5
-        with:
-          platforms: |
-            linux/amd64
-            linux/arm64
-          file: ./tools/Dockerfile
-          context: .
-          push: true
-          tags: "ttl.sh/kuksa.val.services/oci_kuksa-val-services-ci-${{github.sha}}"
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Posting message
-        uses: eclipse-kuksa/kuksa-actions/post-container-location@2
-        with:
-          image: ttl.sh/kuksa.val.services/oci_kuksa-val-services-ci-${{github.sha}}
