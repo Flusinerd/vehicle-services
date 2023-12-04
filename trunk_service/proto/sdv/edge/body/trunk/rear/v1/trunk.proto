@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+package sdv.edge.body.trunk.rear.v1;
+
+service RearTrunk {
+  rpc SetOpenStatus(OpenRequest) returns (google.protobuf.Empty);
+}
+
+message OpenRequest {
+  bool open = 1;
+}
+
+message TrunkStatus {
+  bool open = 1;
+}

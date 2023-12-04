@@ -1,0 +1,59 @@
+# /********************************************************************************
+# * Copyright (c) 2022 Contributors to the Eclipse Foundation
+# *
+# * See the NOTICE file(s) distributed with this work for additional
+# * information regarding copyright ownership.
+# *
+# * This program and the accompanying materials are made available under the
+# * terms of the Apache License 2.0 which is available at
+# * http://www.apache.org/licenses/LICENSE-2.0
+# *
+# * SPDX-License-Identifier: Apache-2.0
+# ********************************************************************************/
+
+name: seat-service-release-build
+
+# Called implicitly on PR by seat_service.yml
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  build:
+    # reduce runtime requirements from libc/libc++
+    runs-on: ubuntu-20.04
+    name: Build
+    strategy:
+      matrix:
+        target-arch: [x86_64, aarch64]
+      fail-fast: true
+
+    steps:
+      - name: adding github workspace as safe directory
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          .github/workflows/scripts/install-ci-tooling.sh
+
+      - name: Run build
+        working-directory: ${{github.workspace}}/seat_service
+        run: ./build-release.sh ${{ matrix.target-arch }}
+
+      - name: Tar files
+        shell: bash
+        working-directory: ${{github.workspace}}/seat_service/
+        run: |
+          tar -czvf bin_vservice-seat_${{ matrix.target-arch }}_release.tar.gz \
+          target/${{ matrix.target-arch }}/release/install/ \
+          target/${{ matrix.target-arch }}/release/licenses/ \
+          proto/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: bin_vservice-seat_${{ matrix.target-arch }}_release.tar.gz
+          path: ${{github.workspace}}/seat_service/bin_vservice-seat_${{ matrix.target-arch }}_release.tar.gz
+          if-no-files-found: error

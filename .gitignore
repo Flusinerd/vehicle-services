@@ -1,0 +1,12 @@
+assets/
+build/
+target/
+report/
+*.tar
+__pycache__/
+.vssclient_history
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+/results/
+megalinter-reports/
+.DS_Store
