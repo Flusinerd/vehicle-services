@@ -11,7 +11,7 @@
 # * SPDX-License-Identifier: Apache-2.0
 # ********************************************************************************/
 
-name: seat-service-docker-build
+name: trunk-service
 
 on:
   push:
@@ -19,8 +19,8 @@ on:
       - main
   pull_request:
     paths:
-      - ".github/workflows/seat_service.yml"
-      - "seat_service/**"
+      - ".github/workflows/trunk_service.yml"
+      - "trunk_service/**"
       - "proto/**"
   workflow_call:
   workflow_dispatch:
@@ -55,26 +55,13 @@ jobs:
           echo "tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
 
 
-  call_seat_service_release:
-    uses: ./.github/workflows/seat_service_release_build.yml
-
   build-container:
-    # The Dockerfile itself does not build from scratch, it relies on existing build artifacts
     runs-on: ubuntu-latest
-    needs:
-      [
-        check_ghcr_push,
-        call_seat_service_release
-      ]
+    needs: check_ghcr_push
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Retrieve build binaries
-        uses: actions/download-artifact@v3
-        with:
-          path: ${{github.workspace}}/seat_service
 
       - name: Docker meta
         id: meta
@@ -82,7 +69,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/eclipse/kuksa.val.services/seat_service
+            ghcr.io/Flusinerd/vehicle-services/trunk_service
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
@@ -105,7 +92,7 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Build container and push to ghcr.io (and ttl.sh)
+      - name: Build container and push to ghcr.io
         id: ghcr-build
         if: needs.check_ghcr_push.outputs.push == 'true'
         uses: docker/build-push-action@v5
@@ -113,29 +100,9 @@ jobs:
           platforms: |
             linux/amd64
             linux/arm64
-          file: ./seat_service/Dockerfile
-          context: .
+          file: ./trunk_service/Dockerfile
+          context: ./trunk_service
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ttl.sh/kuksa.val.services/seat_service-${{github.sha}}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Build container and push to ttl.sh
-        if: needs.check_ghcr_push.outputs.push == 'false'
-        id: tmp-build
-        uses: docker/build-push-action@v5
-        with:
-          platforms: |
-            linux/amd64
-            linux/arm64
-          file: ./seat_service/Dockerfile
-          context: .
-          push: true
-          tags: "ttl.sh/kuksa.val.services/seat_service-${{github.sha}}"
-          labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Posting message
-        uses: eclipse-kuksa/kuksa-actions/post-container-location@2
-        with:
-          image: ttl.sh/kuksa.val.services/seat_service-${{github.sha}}

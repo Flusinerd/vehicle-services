@@ -25,13 +25,13 @@ ROOT_DIRECTORY=$(git rev-parse --show-toplevel)
 source "$ROOT_DIRECTORY/.vscode/scripts/task-common.sh" "$@"
 
 ### NOTE: TRUNKSERVICE* variables are defined in task-common.sh
-# TRUNKSERVICEPORT='50053'
-# TRUNKSERVICEGRPC_PORT='52005'
-# TRUNKSERVICEDAPR_APP_ID='trunkservice'
+# TRUNKSERVICE_PORT='50053'
+# TRUNKSERVICE_GRPC_PORT='52005'
+# TRUNKSERVICEDAPR_APP_ID='trunkservi_ce'
 # VEHICLEDATABROKER_DAPR_APP_ID='vehicledatabroker'
 
 # NOTE: use curent sidecar's grpc port, don't connect directly to sidecar of kdb (DATABROKER_GRPC_PORT)
-export DAPR_GRPC_PORT=$TRUNKSERVICEGRPC_PORT
+export DAPR_GRPC_PORT=$TRUNKSERVICE_GRPC_PORT
 
 TRUNKSERVICEEXEC_PATH="$ROOT_DIRECTORY/trunk_service"
 if [ ! -f "$TRUNKSERVICEEXEC_PATH/trunkservice.py" ]; then
@@ -44,9 +44,9 @@ pip3 install -q -r requirements.txt
 
 echo
 echo "*******************************************"
-echo "* Hvac Service app-id: $TRUNKSERVICEDAPR_APP_ID"
-echo "* Hvac Service APP port: $TRUNKSERVICEPORT"
-echo "* Hvac Service Dapr sidecar port: $TRUNKSERVICEGRPC_PORT"
+echo "* Hvac Service app-id: $TRUNKSERVICE_DAPR_APP_ID"
+echo "* Hvac Service APP port: $TRUNKSERVICE_PORT"
+echo "* Hvac Service Dapr sidecar port: $TRUNKSERVICE_GRPC_PORT"
 echo "* DAPR_GRPC_PORT=$DAPR_GRPC_PORT"
 echo "* metadata: [ VEHICLEDATABROKER_DAPR_APP_ID=$VEHICLEDATABROKER_DAPR_APP_ID ]"
 echo "*******************************************"
@@ -56,10 +56,10 @@ echo
 # DAPR_OPT="--enable-api-logging --log-level debug"1
 DAPR_OPT="--log-level warn"
 dapr run \
-	--app-id $TRUNKSERVICEDAPR_APP_ID \
+	--app-id $TRUNKSERVICE_DAPR_APP_ID \
 	--app-protocol grpc \
-	--app-port $TRUNKSERVICEPORT \
-	--dapr-grpc-port $TRUNKSERVICEGRPC_PORT \
+	--app-port $TRUNKSERVICE_PORT \
+	--dapr-grpc-port $TRUNKSERVICE_GRPC_PORT \
 	$DAPR_OPT \
 	--components-path $ROOT_DIRECTORY/.dapr/components \
 	--config $ROOT_DIRECTORY/.dapr/config.yaml \

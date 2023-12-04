@@ -18,28 +18,13 @@ DESCRIPTOR: google.protobuf.descriptor.FileDescriptor
 class OpenRequest(google.protobuf.message.Message):
     DESCRIPTOR: google.protobuf.descriptor.Descriptor
 
-    OPEN_FIELD_NUMBER: builtins.int
-    open: builtins.bool
+    IS_OPEN_FIELD_NUMBER: builtins.int
+    is_open: builtins.bool
     def __init__(
         self,
         *,
-        open: builtins.bool = ...,
+        is_open: builtins.bool = ...,
     ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["open", b"open"]) -> None: ...
+    def ClearField(self, field_name: typing_extensions.Literal["is_open", b"is_open"]) -> None: ...
 
 global___OpenRequest = OpenRequest
-
-@typing_extensions.final
-class TrunkStatus(google.protobuf.message.Message):
-    DESCRIPTOR: google.protobuf.descriptor.Descriptor
-
-    OPEN_FIELD_NUMBER: builtins.int
-    open: builtins.bool
-    def __init__(
-        self,
-        *,
-        open: builtins.bool = ...,
-    ) -> None: ...
-    def ClearField(self, field_name: typing_extensions.Literal["open", b"open"]) -> None: ...
-
-global___TrunkStatus = TrunkStatus

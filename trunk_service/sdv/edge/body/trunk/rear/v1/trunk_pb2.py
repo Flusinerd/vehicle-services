@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\'sdv/edge/body/trunk/rear/v1/trunk.proto\x12\x1bsdv.edge.body.trunk.rear.v1\x1a\x1bgoogle/protobuf/empty.proto\"\x1b\n\x0bOpenRequest\x12\x0c\n\x04open\x18\x01 \x01(\x08\"\x1b\n\x0bTrunkStatus\x12\x0c\n\x04open\x18\x01 \x01(\x08\x32^\n\tRearTrunk\x12Q\n\rSetOpenStatus\x12(.sdv.edge.body.trunk.rear.v1.OpenRequest\x1a\x16.google.protobuf.Emptyb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\'sdv/edge/body/trunk/rear/v1/trunk.proto\x12\x1bsdv.edge.body.trunk.rear.v1\x1a\x1bgoogle/protobuf/empty.proto\"\x1e\n\x0bOpenRequest\x12\x0f\n\x07is_open\x18\x01 \x01(\x08\x32^\n\tRearTrunk\x12Q\n\rSetOpenStatus\x12(.sdv.edge.body.trunk.rear.v1.OpenRequest\x1a\x16.google.protobuf.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,9 +22,7 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'sdv.edge.body.trunk.rear.v1
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_OPENREQUEST']._serialized_start=101
-  _globals['_OPENREQUEST']._serialized_end=128
-  _globals['_TRUNKSTATUS']._serialized_start=130
-  _globals['_TRUNKSTATUS']._serialized_end=157
-  _globals['_REARTRUNK']._serialized_start=159
-  _globals['_REARTRUNK']._serialized_end=253
+  _globals['_OPENREQUEST']._serialized_end=131
+  _globals['_REARTRUNK']._serialized_start=133
+  _globals['_REARTRUNK']._serialized_end=227
 # @@protoc_insertion_point(module_scope)

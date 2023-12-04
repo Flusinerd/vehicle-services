@@ -21,7 +21,7 @@ on:
     paths:
       - "tools/Dockerfile"
       - ".github/workflows/dev_container_build.yml"
-      - "hvac_service/requirements-dev.txt"
+      - "trunk_service/requirements-dev.txt"
       - "integration_test/requirements-dev.txt"
   workflow_call:
   workflow_dispatch:

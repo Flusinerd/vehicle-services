@@ -150,8 +150,7 @@
       "type": "shell",
       "command": "./.vscode/scripts/run-trunk-cli.sh",
       "args": [
-        "${input:AC_TEMP}",
-        "${input:AC_STATUS}"
+        "${input:TRUNK_STATUS}",
       ],
       "group": "test",
       "isBackground": false,
@@ -316,10 +315,10 @@
       "default": "wait"
     },
     {
-      "id": "AC_TEMP",
+      "id": "TRUNK_STATUS",
       "type": "promptString",
-      "description": "AC Temperature",
-      "default": "23.0"
+      "description": "Trunk Status",
+      "default": "OPEN"
     },
     {
       "id": "AC_STATUS",

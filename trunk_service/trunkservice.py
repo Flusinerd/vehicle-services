@@ -7,6 +7,7 @@ import threading
 from threading import Thread
 import time
 from typing import Any, Dict, Optional, Tuple
+from google.protobuf.empty_pb2 import Empty
 
 import grpc
 from sdv.databroker.v1.collector_pb2_grpc import CollectorStub
@@ -190,6 +191,7 @@ class TrunkService:
       log.info("* Request to set open status to %s", str(request).replace("\n", " "))
       self._servicer.set_bool_datapoint("Vehicle.Body.Trunk.Rear.IsOpen", request.is_open)
       log.info(" Trunk status updated\n")
+      return Empty()
 
 async def main():
   trunk_service = TrunkService(SERVICE_ADDRESS)

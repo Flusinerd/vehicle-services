@@ -37,7 +37,7 @@ fi
 pip3 install -q -r "${ROOT_DIRECTORY}/integration_test/requirements-dev.txt"
 pip3 install -q -r "${ROOT_DIRECTORY}/integration_test/requirements.txt"
 pip3 install -q -e "${ROOT_DIRECTORY}/integration_test/"
-pip3 install -q -e "${ROOT_DIRECTORY}/hvac_service/"
+pip3 install -q -e "${ROOT_DIRECTORY}/trunk_service/"
 
 set +e
 
@@ -49,7 +49,7 @@ if [ "$USE_DAPR" = "0" ]; then
 		export SEAT_TAG="prerelease"
 		export HVAC_TAG="prerelease"
 		"${ROOT_DIRECTORY}/seat_service/docker-build.sh" -l x86_64
-		"${ROOT_DIRECTORY}/hvac_service/docker-build.sh" -l x86_64
+		"${ROOT_DIRECTORY}/trunk_service/docker-build.sh" -l x86_64
 	fi
 	"${ROOT_DIRECTORY}/integration_test/it-setup.sh" init
 

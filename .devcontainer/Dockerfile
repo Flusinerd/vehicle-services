@@ -27,7 +27,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install basic utils needed inside devcontainer
 RUN apt-get update && \
-  apt-get install -qqy wget zip  \
+  apt-get install -qqy wget zip unzip  \
   bash \
   xz-utils \
   apt-transport-https \
@@ -52,4 +52,4 @@ RUN echo $TZ > /etc/timezone && \
   dpkg-reconfigure -f noninteractive tzdata
 
 #TODO: fix and uncomment: This is needed for local development under linux
-#USER dockeruser
+# USER dockeruser

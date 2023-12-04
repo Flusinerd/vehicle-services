@@ -24,20 +24,19 @@ ROOT_DIRECTORY=$(git rev-parse --show-toplevel)
 # shellcheck source=/dev/null
 source "$ROOT_DIRECTORY/.vscode/scripts/task-common.sh" "$@"
 
-TEMP="$1"
-STATUS_MODE="$2"
+STATUS="$1"
 
 # sanity checks for invalid user input
-if [ -z "$TEMP" ] || [ "$STATUS_MODE" != "ON" ] && [ "$STATUS_MODE" != "OFF" ]; then
+if [ -z "$STATUS" ]; then
 	echo "Invalid arguments!"
 	echo
-	echo "Usage: $0 AC_TEMP [ON | OFF]"
+	echo "Usage: $0 TRUNK_STATUS [OPEN|CLOSED]"
 	echo
 	exit 1
 fi
 
-# replace [ON/OFF] with [1/0] for AC_STATUS
-if [ "$STATUS_MODE" = "ON" ]; then
+# replace [OPEN/CLOSED] with [1/0] for AC_STATUS
+if [ "$STATUS_MODE" = "OPEN" ]; then
 	STATUS="1"
 else
 	STATUS="0"
@@ -58,4 +57,4 @@ pip3 install -q -r requirements.txt
 # export CLI_LOG_LEVEL="WARNING"
 
 # set -x
-python3 -u testclient.py --addr=localhost:$TRUNKSERVICE_PORT --temp=$TEMP --status=$STATUS
+python3 -u testclient.py --addr=localhost:$TRUNKSERVICE_PORT --status=$STATUS
